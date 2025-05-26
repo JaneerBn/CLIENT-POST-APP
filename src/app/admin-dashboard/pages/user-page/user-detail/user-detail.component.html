@@ -1,0 +1,17 @@
+<h1 class="text-2xl font-bold font-montserrat">
+  {{ user().first_name }} {{ user().last_name }}
+</h1>
+<div class="divider divider-secondary"></div>
+
+<form
+  [formGroup]="userForm"
+  class="grip grid-cols-1 sm:grid-cols-2 gap-4"
+  (ngSubmit)="onSubmit()"
+>
+
+<div class="flex flex-col gap-2">
+    <h2>Datros del Usuario</h2>
+    <input type="text" placeholder="first name" class="input input-bordered w-full" formControlName="first_name"> 
+</div>
+
+</form>
