@@ -2,23 +2,34 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login-page',
   imports: [ReactiveFormsModule],
   templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.css'],
+  styleUrl: './login-page.component.css'
 })
 export class LoginPageComponent {
   authService = inject(AuthService);
   router = inject(Router);
-  fb = inject(FormBuilder);
-  hasError = signal(false);
+  fb = inject(FormBuilder)
+  hasError = signal(false)
   type = 'password';
   icon = 'bi bi-eye';
 
+  ngOnInit() {
+    const rememberedEmail = localStorage.getItem('rememberedEmail');
+    if (rememberedEmail) {
+      this.loginForm.patchValue({
+        email: rememberedEmail,
+        rememberMe: true,
+      });
+    }
+  }
+
   showPassword(type: string) {
-    if (type == 'password') {
+    if (type === 'password') {
       this.type = 'text';
       this.icon = 'bi bi-eye-slash';
     } else {
@@ -29,10 +40,12 @@ export class LoginPageComponent {
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(4)]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    rememberMe: [false],
   });
 
   onSubmit() {
+    let auth = false;
     if (this.loginForm.invalid) {
       this.hasError.set(true);
       setTimeout(() => {
@@ -40,11 +53,25 @@ export class LoginPageComponent {
       }, 2000);
       return;
     }
-    const { email = '', password = '' } = this.loginForm.value;
-    console.log('Enviando login:', email, password);
+    const { email = '', password = '', rememberMe } = this.loginForm.value;
+
+    if (rememberMe) {
+      localStorage.setItem('rememberedEmail', email!);
+    } else {
+      localStorage.removeItem('rememberedEmail');
+    }
+
+
     this.authService.login(email!, password!).subscribe((isAuthenticated) => {
+      console.log('Login response:', isAuthenticated);
       if (isAuthenticated) {
-        alert('logueado');
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: `Bienvenido: ${this.authService.user().name} `,
+          showConfirmButton: false,
+          timer: 1500,
+        });
         this.router.navigateByUrl('/dashboard');
         return;
       }
@@ -55,4 +82,5 @@ export class LoginPageComponent {
       return;
     });
   }
+
 }

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "CLIENT-POST-APP": {
+    "post-app": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/client-post-app",
+            "outputPath": "dist/post-app",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "CLIENT-POST-APP:build:production"
+              "buildTarget": "post-app:build:production"
             },
             "development": {
-              "buildTarget": "CLIENT-POST-APP:build:development"
+              "buildTarget": "post-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -100,6 +100,6 @@
     }
   },
   "cli": {
-    "analytics": "ef807889-c823-424c-9111-cbf8102aef58"
+    "analytics": "4bc165a0-353c-43a7-8b6a-5a3e12a2f110"
   }
 }

@@ -8,11 +8,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   let headers = req.headers;
   headers = headers.set('Authorization', `Bearer ${token}`);
-  headers = headers.set('x-api-key', environment.apiKey)
-
+  headers = headers.set('x-api-key', environment.apiKey);
 
   const newReq = req.clone({
     headers,
   });
+
+
   return next(newReq);
 };

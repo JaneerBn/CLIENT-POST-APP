@@ -1,20 +1,20 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { BaseHttpService } from '../../shared/services/base-http.service';
 import { catchError, map, Observable, of } from 'rxjs';
-import { rxResource } from '@angular/core/rxjs-interop';
+import {rxResource} from '@angular/core/rxjs-interop';
 
 type AuthStatus = 'checking' | 'authenticated' | 'not-authenticated';
-
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService extends BaseHttpService {
+
   private _authStatus = signal<AuthStatus>('checking');
   private _user = signal<any>(null);
-  private _token = signal<string | null>(localStorage.getItem('token'));
+  private _token = signal<String | null>(localStorage.getItem('token'));
 
   checkStatusResource = rxResource({
-    loader: () => this.checkStatus(),
+    loader: () => this.checkStatus()
   });
 
   authStatus = computed(() => {
@@ -25,7 +25,7 @@ export class AuthService extends BaseHttpService {
 
   user = computed(() => this._user());
   token = computed(() => this._token());
-  isAdmin = computed(() => this._user()?.Role?.name.includes('admin') ?? false);
+  isAdmin = computed(() => this._user()?.Role?.name?.includes('admin') ?? false);
 
   login(email: string, password: string): Observable<boolean> {
     return this.http
@@ -55,8 +55,6 @@ export class AuthService extends BaseHttpService {
     );
   }
 
-  
-
   logout(): void {
     this._user.set('');
     this._token.set('');
@@ -75,8 +73,9 @@ export class AuthService extends BaseHttpService {
   }
 
   private handleAuthError(error: any) {
-    console.error('Error en login:', error);
     this.logout();
     return of(false);
   }
+
 }
+

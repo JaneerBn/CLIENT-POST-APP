@@ -1,21 +1,23 @@
 import { Routes } from '@angular/router';
 import { authenticatedGuard } from './auth/guards/authenticated.guard';
-import { notAuthenticatedGuard } from './auth/guards/notAuthenticated.guard';
+import { notAuthenticated } from './auth/guards/notAuthenticated.guard';
 
 export const routes: Routes = [
 
+
     {
         path: 'auth',
-        canMatch : [notAuthenticatedGuard],
-        loadChildren:() =>import('./auth/auth.routes')
+        canMatch: [notAuthenticated],
+        loadChildren: () => import('./auth/auth.routes'),
     },
-        {
+    {
         path: 'dashboard',
-        canMatch : [authenticatedGuard],
-        loadChildren:() =>import('./admin-dashboard/dashboard.routes')
+        canMatch: [authenticatedGuard],
+        loadChildren: () => import('./admin-dashboard/dashboard.routes'),
     },
     {
         path: '',
-        loadChildren:()=> import('./front-page/front.routes')
-    }    
+        loadChildren: () => import('./front-page/front.routes'),
+    },
+
 ];
